@@ -35,4 +35,6 @@
     <string name="price_1000">1000.00</string>
     <string name="change_100_percent">100%</string>
 
+    <string name="add_stock">Add a stock</string>
+
 </resources>
