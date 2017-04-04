@@ -12,16 +12,7 @@
             android:id="@+id/widget_layout_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#aaDEDFDE"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
-            <ImageView
-                android:id="@+id/widget_img_launcher"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
-                android:src="@mipmap/ic_launcher"/>
+            android:background="#aaDEDFDE">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
