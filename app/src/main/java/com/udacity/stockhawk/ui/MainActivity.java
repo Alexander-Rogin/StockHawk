@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.error)
     TextView error;
     private StockAdapter adapter;
-    private RemoteViews mRemoteViews;
 
     @Override
     public void onClick(String symbol) {

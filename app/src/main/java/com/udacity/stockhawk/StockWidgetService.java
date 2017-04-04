@@ -1,11 +1,7 @@
-package com.udacity.stockhawk.ui;
+package com.udacity.stockhawk;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;
-
-/**
- * Created by arogin on 3.4.2017 г..
- */
 
 public class StockWidgetService extends RemoteViewsService {
     @Override

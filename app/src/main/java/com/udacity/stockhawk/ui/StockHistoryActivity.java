@@ -40,7 +40,6 @@ public class StockHistoryActivity extends AppCompatActivity {
         String symbol = parentIntent.getStringExtra(Intent.EXTRA_TEXT);
 
         diplayHistory(symbol);
-//        Toast.makeText(this, symbol, Toast.LENGTH_LONG).show();
     }
 
     private void diplayHistory(String symbol) {

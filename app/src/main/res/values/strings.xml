@@ -36,5 +36,7 @@
     <string name="change_100_percent">100%</string>
 
     <string name="add_stock">Add a stock</string>
+    <string name="widget_stocks">Stocks</string>
+    <string name="widget_header">Stock Hawk</string>
 
 </resources>
