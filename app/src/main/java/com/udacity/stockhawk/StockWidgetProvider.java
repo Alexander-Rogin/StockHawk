@@ -1,5 +1,8 @@
 package com.udacity.stockhawk;
 
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,94 +12,26 @@ import android.widget.RemoteViewsService;
 
 import com.jjoe64.graphview.series.DataPoint;
 import com.udacity.stockhawk.data.Contract;
+import com.udacity.stockhawk.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StockWidgetProvider implements RemoteViewsService.RemoteViewsFactory {
-    ArrayList<QuoteData> mStocks = new ArrayList<>();
-    Context mContext = null;
-
-    public StockWidgetProvider(Context context, Intent intent) {
-        mContext = context;
-    }
-
+public class StockWidgetProvider extends AppWidgetProvider {
     @Override
-    public void onCreate() {
-        updateData();
-    }
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        final int widgetCount = appWidgetIds.length;
 
-    private void updateData() {
-        Uri uri = Contract.Quote.URI.buildUpon().build();
-        Cursor cursor = mContext.getContentResolver().query(uri,
-                null,
-                null,
-                null,
-                null);
+        for (int i = 0; i < widgetCount; i++) {
+            int appWidgetId = appWidgetIds[i];
 
-        if (cursor != null) {
-            mStocks.clear();
-            while (cursor.moveToNext()) {
-                String symbol = cursor.getString(cursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL));
-                String price = cursor.getString(cursor.getColumnIndex(Contract.Quote.COLUMN_PRICE));
-                String change = cursor.getString(cursor.getColumnIndex(Contract.Quote.COLUMN_ABSOLUTE_CHANGE));
-                mStocks.add(new QuoteData(symbol, price, change));
-            }
-        }
-    }
+            Intent intent = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-    @Override
-    public void onDataSetChanged() {
-        updateData();
-    }
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.stock_widget);
+            views.setOnClickPendingIntent(R.id.widget_layout_main, pendingIntent);
 
-    @Override
-    public void onDestroy() {
-    }
-
-    @Override
-    public int getCount() {
-        return mStocks.size();
-    }
-
-    @Override
-    public RemoteViews getViewAt(int position) {
-        RemoteViews view = new RemoteViews(mContext.getPackageName(), R.layout.list_item_quote);
-        view.setTextViewText(R.id.symbol, mStocks.get(position).symbol);
-        view.setTextViewText(R.id.price, mStocks.get(position).price);
-        view.setTextViewText(R.id.change, mStocks.get(position).change);
-        return view;
-    }
-
-    @Override
-    public RemoteViews getLoadingView() {
-        return null;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    private class QuoteData {
-        private String change;
-        private String price;
-        private String symbol;
-
-        public QuoteData(String symbol, String price, String change) {
-            this.change = change;
-            this.price = price;
-            this.symbol = symbol;
+            appWidgetManager.updateAppWidget(appWidgetId, views);
         }
     }
 }
