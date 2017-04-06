@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -37,12 +38,23 @@ class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onDataSetChanged() {
-
+        if (mCursor != null) {
+            mCursor.close();
+        }
+        Uri uri = Contract.Quote.URI.buildUpon().build();
+        mCursor = mContext.getContentResolver().query(uri,
+                null,
+                null,
+                null,
+                null);
     }
 
     @Override
     public void onDestroy() {
-
+        if (mCursor != null) {
+            mCursor.close();
+            mCursor = null;
+        }
     }
 
     @Override

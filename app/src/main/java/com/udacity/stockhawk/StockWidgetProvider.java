@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.jjoe64.graphview.series.DataPoint;
 import com.udacity.stockhawk.data.Contract;
+import com.udacity.stockhawk.sync.QuoteSyncJob;
 import com.udacity.stockhawk.ui.MainActivity;
 import com.udacity.stockhawk.ui.StockHistoryActivity;
 
@@ -21,9 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StockWidgetProvider extends AppWidgetProvider {
-    private static final String STOCK_ACTION = "com.udacity.stockhawk.STOCK_ACTION";
-    public static final String STOCK_SYMBOL = "com.udacity.stockhawk.STOCK_SYMBOL";
-
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int widgetCount = appWidgetIds.length;
@@ -35,7 +34,7 @@ public class StockWidgetProvider extends AppWidgetProvider {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.stock_widget);
-            rv.setRemoteAdapter(appWidgetId, R.id.widget_list, intent);
+            rv.setRemoteAdapter(R.id.widget_list, intent);
 
             Intent mainActivityIntent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
@@ -47,8 +46,20 @@ public class StockWidgetProvider extends AppWidgetProvider {
                     .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             rv.setPendingIntentTemplate(R.id.widget_list, stockPendingIntent);
 
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
             appWidgetManager.updateAppWidget(appWidgetId, rv);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        if (QuoteSyncJob.ACTION_DATA_UPDATED.equals(intent.getAction())) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
+                    new ComponentName(context, getClass()));
+            onUpdate(context, appWidgetManager, appWidgetIds);
+        }
     }
 }
