@@ -1,4 +1,4 @@
-package com.udacity.stockhawk;
+package com.udacity.stockhawk.widget;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;

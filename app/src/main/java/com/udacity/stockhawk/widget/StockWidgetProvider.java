@@ -1,4 +1,4 @@
-package com.udacity.stockhawk;
+package com.udacity.stockhawk.widget;
 
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -7,20 +7,13 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
-import android.widget.Toast;
 
-import com.jjoe64.graphview.series.DataPoint;
-import com.udacity.stockhawk.data.Contract;
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.sync.QuoteSyncJob;
 import com.udacity.stockhawk.ui.MainActivity;
 import com.udacity.stockhawk.ui.StockHistoryActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StockWidgetProvider extends AppWidgetProvider {
     @Override

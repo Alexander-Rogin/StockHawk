@@ -47,7 +47,7 @@
         </activity>
 
 
-        <receiver android:name="StockWidgetProvider">
+        <receiver android:name=".widget.StockWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.udacity.stockhawk.ACTION_DATA_UPDATED" />
@@ -58,7 +58,7 @@
                 android:resource="@xml/stock_widget_info" />
         </receiver>
 
-        <service android:name=".StockWidgetService"
+        <service android:name=".widget.StockWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
     </application>
