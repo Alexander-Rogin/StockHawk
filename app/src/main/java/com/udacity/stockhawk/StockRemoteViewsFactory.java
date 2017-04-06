@@ -34,11 +34,14 @@ class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                 null,
                 null);
 
-        while (mCursor.moveToNext()) {
-            String symbol = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL));
-            String price = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_PRICE));
-            String change = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_ABSOLUTE_CHANGE));
-            mWidgetItems.add(new WidgetItem(symbol, price, change));
+        if (mCursor != null) {
+            mWidgetItems.clear();
+            while (mCursor.moveToNext()) {
+                String symbol = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL));
+                String price = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_PRICE));
+                String change = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_ABSOLUTE_CHANGE));
+                mWidgetItems.add(new WidgetItem(symbol, price, change));
+            }
         }
     }
 
@@ -54,7 +57,7 @@ class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return 0;
+        return mWidgetItems.size();
     }
 
     @Override
@@ -75,12 +78,12 @@ class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getViewTypeCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
