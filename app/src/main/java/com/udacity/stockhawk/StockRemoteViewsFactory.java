@@ -19,7 +19,6 @@ import java.util.List;
 class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     Cursor mCursor;
     Context mContext;
-    private List<WidgetItem> mWidgetItems = new ArrayList<>();
 
     public StockRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
@@ -33,16 +32,6 @@ class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                 null,
                 null,
                 null);
-
-        if (mCursor != null) {
-            mWidgetItems.clear();
-            while (mCursor.moveToNext()) {
-                String symbol = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL));
-                String price = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_PRICE));
-                String change = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_ABSOLUTE_CHANGE));
-                mWidgetItems.add(new WidgetItem(symbol, price, change));
-            }
-        }
     }
 
     @Override
@@ -57,18 +46,23 @@ class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return mWidgetItems.size();
+        return mCursor.getCount();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
-        WidgetItem widgetItem = mWidgetItems.get(position);
+        if (mCursor != null && mCursor.moveToPosition(position)) {
+            String symbol = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL));
+            String price = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_PRICE));
+            String change = mCursor.getString(mCursor.getColumnIndex(Contract.Quote.COLUMN_ABSOLUTE_CHANGE));
 
-        RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.list_item_quote);
-        rv.setTextViewText(R.id.symbol, widgetItem.mSymbol);
-        rv.setTextViewText(R.id.price, widgetItem.mPrice);
-        rv.setTextViewText(R.id.change, widgetItem.mChange);
-        return rv;
+            RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.list_item_quote);
+            rv.setTextViewText(R.id.symbol, symbol);
+            rv.setTextViewText(R.id.price, price);
+            rv.setTextViewText(R.id.change, change);
+            return rv;
+        }
+        return null;
     }
 
     @Override
@@ -89,17 +83,5 @@ class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public boolean hasStableIds() {
         return false;
-    }
-
-    private class WidgetItem {
-        private String mSymbol;
-        private String mPrice;
-        private String mChange;
-
-        private WidgetItem(String symbol, String price, String change) {
-            mSymbol = symbol;
-            mPrice = price;
-            mChange = change;
-        }
     }
 }

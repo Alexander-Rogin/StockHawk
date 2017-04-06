@@ -31,17 +31,10 @@ public class StockWidgetProvider extends AppWidgetProvider {
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.stock_widget);
             rv.setRemoteAdapter(appWidgetId, R.id.widget_list, intent);
 
-
-//            appWidgetManager.updateAppWidget(appWidgetIds[i], rv);
-//
-//
             Intent mainActivityIntent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
-//
-//            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.stock_widget);
-//            views.setOnClickPendingIntent(R.id.widget_layout_main, pendingIntent);
             rv.setOnClickPendingIntent(R.id.widget_layout_main, pendingIntent);
-//
+
             appWidgetManager.updateAppWidget(appWidgetId, rv);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
