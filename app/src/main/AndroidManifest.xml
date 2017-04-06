@@ -57,6 +57,9 @@
                 android:resource="@xml/stock_widget_info" />
         </receiver>
 
+        <service android:name=".StockWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
     </application>
 
 </manifest>

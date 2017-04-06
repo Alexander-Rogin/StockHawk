@@ -25,13 +25,26 @@ public class StockWidgetProvider extends AppWidgetProvider {
         for (int i = 0; i < widgetCount; i++) {
             int appWidgetId = appWidgetIds[i];
 
-            Intent intent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            Intent intent = new Intent(context, StockWidgetService.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.stock_widget);
+            rv.setRemoteAdapter(appWidgetId, R.id.widget_list, intent);
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.stock_widget);
-            views.setOnClickPendingIntent(R.id.widget_layout_main, pendingIntent);
+//            rv.setEmptyView(R.id.widget_list, R.id.empty_view);
 
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+
+//            appWidgetManager.updateAppWidget(appWidgetIds[i], rv);
+//
+//
+//            Intent intent = new Intent(context, MainActivity.class);
+//            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+//
+//            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.stock_widget);
+//            views.setOnClickPendingIntent(R.id.widget_layout_main, pendingIntent);
+//
+            appWidgetManager.updateAppWidget(appWidgetId, rv);
         }
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 }
