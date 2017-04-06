@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -60,6 +61,11 @@ class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
             rv.setTextViewText(R.id.symbol, symbol);
             rv.setTextViewText(R.id.price, price);
             rv.setTextViewText(R.id.change, change);
+
+            final Intent fillInIntent = new Intent();
+            fillInIntent.putExtra(Intent.EXTRA_TEXT, symbol);
+            rv.setOnClickFillInIntent(R.id.list_item, fillInIntent);
+
             return rv;
         }
         return null;
