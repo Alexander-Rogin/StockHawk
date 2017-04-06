@@ -4,4 +4,5 @@
     <dimen name="widget_default_width">180dp</dimen>
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_header_padding">8dp</dimen>
+    <dimen name="widget_header_text_size">30sp</dimen>
 </resources>
