@@ -1,14 +1,20 @@
 package com.udacity.stockhawk.data;
 
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.udacity.stockhawk.widget.StockWidgetProvider;
 
 
 public class StockProvider extends ContentProvider {
@@ -105,6 +111,7 @@ public class StockProvider extends ContentProvider {
         Context context = getContext();
         if (context != null){
             context.getContentResolver().notifyChange(uri, null);
+            notifyWidget(context);
         }
 
         return returnUri;
@@ -144,10 +151,19 @@ public class StockProvider extends ContentProvider {
             Context context = getContext();
             if (context != null){
                 context.getContentResolver().notifyChange(uri, null);
+                notifyWidget(context);
             }
         }
 
         return rowsDeleted;
+    }
+
+    private void notifyWidget(Context context) {
+        Intent intent = new Intent(context, StockWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int ids[] = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, StockProvider.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        context.sendBroadcast(intent);
     }
 
     @Override
@@ -180,6 +196,7 @@ public class StockProvider extends ContentProvider {
                 Context context = getContext();
                 if (context != null) {
                     context.getContentResolver().notifyChange(uri, null);
+                    notifyWidget(context);
                 }
 
                 return returnCount;
