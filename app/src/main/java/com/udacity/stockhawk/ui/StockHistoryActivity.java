@@ -1,16 +1,12 @@
 package com.udacity.stockhawk.ui;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.icu.util.Calendar;
 import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
@@ -28,7 +24,7 @@ import butterknife.ButterKnife;
 public class StockHistoryActivity extends AppCompatActivity {
     @BindView(R.id.histroy_graph)
     GraphView mGraph;
-    Context mContext;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

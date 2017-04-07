@@ -4,24 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by arogin on 5.4.2017 г..
  */
 
 class StockRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    Cursor mCursor;
-    Context mContext;
+    private Cursor mCursor;
+    private final Context mContext;
 
     public StockRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
